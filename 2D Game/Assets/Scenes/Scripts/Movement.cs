@@ -7,6 +7,8 @@ public class Movement : MonoBehaviour
     public CharacterController2D controller;
     public Animator animator;
 
+    public Transform firePoint;
+
     public float speed = 40f;
     float horizontalMove = 0f;
     bool jump = false;
@@ -30,12 +32,12 @@ public class Movement : MonoBehaviour
         if (Input.GetButtonDown("Crouch"))
         {
             crouch = true;
-            //animator.SetBool("crouch", true);
+            firePoint.Translate(+0.15f, -0.36f, 0f);
         }
         else if (Input.GetButtonUp("Crouch"))
         {
+            firePoint.Translate(-0.15f, +0.36f, 0f);
             crouch = false;
-            //animator.SetBool("crouch", false);
         }
     }
 

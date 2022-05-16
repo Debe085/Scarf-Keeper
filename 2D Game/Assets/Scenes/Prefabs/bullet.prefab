@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6125494302022311172}
   - component: {fileID: 7537167300284550621}
   - component: {fileID: -741765931651351383}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,5 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650a5bbeb43d0ea42ac4863dfd417f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemieLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   speed: 10
   rb: {fileID: 6125494302022311172}
+  enemie: {fileID: 3963580975188336978, guid: 15e6b755750f4b8458836082d2e5fe33, type: 3}
