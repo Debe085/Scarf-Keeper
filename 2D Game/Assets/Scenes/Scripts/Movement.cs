@@ -21,7 +21,10 @@ public class Movement : MonoBehaviour
         if(Input.GetButtonDown("Jump"))
         {
             jump = true;
-            animator.SetBool("IsJumping", true);
+            if(!animator.GetBool("IsCrouching"))
+            {
+                animator.SetBool("IsJumping", true);
+            }
         }
 
         if (Input.GetButtonDown("Crouch"))
