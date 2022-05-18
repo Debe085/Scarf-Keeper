@@ -5,52 +5,56 @@ using UnityEngine.Events;
 
 public class Enemie : MonoBehaviour
 {
-    //Enemie properties
     public float life = 100f;
+    
     [SerializeField] Transform headCheck;
-    private CircleCollider2D colliderEnemie;
 
-    //Bullet properties
-
-    public Bullet bullet;
-
-    //Player properties
-    [SerializeField] Rigidbody2D playerBody;
-    public Animator playerAnimator;
-    [SerializeField] Transform playerTranform;
-
-    //Staff
-    [SerializeField] LayerMask playerLayer;
-    [SerializeField] LayerMask bulletLayer;
     const float headRadius = .2f;
 
-    void FixedUpdate()
-    {
-        colliderEnemie = gameObject.GetComponent<CircleCollider2D>();
+    private CircleCollider2D colliderEnemie;
 
-        Collider2D[] colliderPlayer = Physics2D.OverlapCircleAll(headCheck.position, headRadius, playerLayer);
-		for (int i = 0; i < colliderPlayer.Length; i++)
-		{
-			if (colliderPlayer[i].gameObject != gameObject)
-			{
-                life -= 100;
-                playerBody.AddForce(new Vector2(0f, 800f));
-                playerAnimator.SetBool("IsJumping", true);
-			}
-		}
-        
-        LifeCheck();
-    }
+    private Animator enemieAnimator;
 
+    public RuntimeAnimatorController hitAnimation;
+
+    public RuntimeAnimatorController idleAnimation;
+
+    void Update() => LifeCheck();
+
+    //The player takes damage and change the animation to "hitAnimation" which is the animation for the hit player
     public void GetDamage()
     {
         life -= 50f;
+
+        enemieAnimator = gameObject.GetComponent<Animator>();
+        enemieAnimator.runtimeAnimatorController = hitAnimation;
+
+        StartCoroutine(SwitchAnimator());
     }
+
+    //SwitchAnimator takes a little pause between the hit Animation and the idle Animation;
+    public IEnumerator SwitchAnimator()
+    {
+        yield return new WaitForSeconds(0.1f);
+        
+        enemieAnimator.runtimeAnimatorController = idleAnimation;    
+        
+        StopAllCoroutines();
+    }
+
     public void LifeCheck()
     {
         if(life <= 0)
         {
             Destroy(gameObject);
         }    
+    }
+
+    void OnTriggerEnter2D(Collider2D other) 
+    {
+        if(other.gameObject.tag == "Bullet")
+        {
+            GetDamage();
+        }
     }
 }

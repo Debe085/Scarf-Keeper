@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
-    public LayerMask enemieLayer;
     public float speed = 20f;
+    public LayerMask enemieLayer;
     public Rigidbody2D rb;
     public GameObject enemie;
 
     void Start()
     {
         rb.velocity = transform.right * speed;
+
+        StartCoroutine(BulletLife());
     }
 
     void OnTriggerEnter2D(Collider2D hitinfo)
     {
         Destroy(gameObject);
+    }
 
-        try
-        {
-            if(hitinfo.gameObject.layer == 10)
-            {
-                hitinfo.gameObject.GetComponent<Enemie>().GetDamage();
-            }
-                
-        }
-        catch
-        {
-        }
+    public IEnumerator BulletLife()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Destroy(gameObject);
+
+        StopAllCoroutines();
     }
 
 }

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Movement : MonoBehaviour
+public class Player : MonoBehaviour
 {
+    public float life = 120f;
+    private Rigidbody2D rb;
     public CharacterController2D controller;
     public Animator animator;
 
@@ -36,9 +39,11 @@ public class Movement : MonoBehaviour
         }
         else if (Input.GetButtonUp("Crouch"))
         {
-            firePoint.Translate(-0.15f, +0.36f, 0f);
             crouch = false;
+            firePoint.Translate(-0.15f, +0.36f, 0f);
         }
+
+        LifeCheck();
     }
 
     public void OnLanding()
@@ -55,5 +60,36 @@ public class Movement : MonoBehaviour
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
         jump = false;
+    }
+
+    public void LifeCheck()
+    {
+        if (life <= 0)
+        {
+            SceneManager.LoadScene("Stage1");
+        }
+    }
+
+    public void GetDamage()
+    {
+        Debug.Log("Gotcha");
+        
+
+        life -= 40f;
+
+        //enemieAnimator = gameObject.GetComponent<Animator>();
+        //enemieAnimator.runtimeAnimatorController = hitAnimation;
+        //StartCoroutine(SwitchAnimator());
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        if (other.gameObject.layer == 10)
+        {
+            GetDamage();
+
+            rb = gameObject.GetComponent<Rigidbody2D>();
+            rb.AddForce(-rb.velocity);
+        }  
     }
 }
