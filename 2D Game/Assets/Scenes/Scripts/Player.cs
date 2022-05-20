@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         Debug.Log("Gotcha");
         
 
-        life -= 40f;
+        life -= 10f;
 
         //enemieAnimator = gameObject.GetComponent<Animator>();
         //enemieAnimator.runtimeAnimatorController = hitAnimation;
@@ -89,7 +89,13 @@ public class Player : MonoBehaviour
             GetDamage();
 
             rb = gameObject.GetComponent<Rigidbody2D>();
-            rb.AddForce(-rb.velocity);
+            if (animator.GetFloat("speed") > 0.01f && !animator.GetBool("IsJumping"))
+            {
+                rb.AddForce(-rb.velocity.normalized * 1600);    
+            } else   
+            {  
+                rb.AddForce(-rb.velocity.normalized * 600);
+            }
         }  
     }
 }

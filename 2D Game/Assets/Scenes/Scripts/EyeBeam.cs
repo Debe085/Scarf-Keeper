@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EyeBeam : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class EyeBeam : MonoBehaviour
 
         if(Input.GetButtonDown("Reload"))
         {
+            magazine = -1f;
+            
             StartCoroutine(Recharge());
         }
     }
@@ -40,7 +43,7 @@ public class EyeBeam : MonoBehaviour
     {
         yield return new WaitForSeconds(reload);
 
-        magazine = 10f;   
+        magazine = 6f;   
 
         StopAllCoroutines();
     }
