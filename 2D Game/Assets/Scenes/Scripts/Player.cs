@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
         if(Input.GetButtonDown("Jump"))
         {
             jump = true;
+            speed = 30f;
             if(!animator.GetBool("IsCrouching"))
             {
                 animator.SetBool("IsJumping", true);
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
 
     public void OnLanding()
     {
+        speed = 40f;
         animator.SetBool("IsJumping", false);
     }
 
@@ -77,9 +79,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void GetDamage()
+    public void GetDamage(float damage)
     {
-        life -= 10f;
+        life -= damage;
 
         //enemieAnimator = gameObject.GetComponent<Animator>();
         //enemieAnimator.runtimeAnimatorController = hitAnimation;
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == 10)
         {
-            GetDamage();
+            GetDamage(10);
 
             rb = gameObject.GetComponent<Rigidbody2D>();
             if (animator.GetFloat("speed") > 0.01f && !animator.GetBool("IsJumping"))
@@ -115,5 +117,17 @@ public class Player : MonoBehaviour
     void CheckKeys()
     {
         keysText.text = "" + keys;
+    }
+
+    public void Heal(float heal)
+    {
+        if ((gameObject.GetComponent<Player>().life + heal) > 120f)
+        {
+            life = 120f;
+        }
+        else
+        {
+            life += 80f;
+        }
     }
 }
