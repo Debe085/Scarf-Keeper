@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
+    public TextMeshProUGUI keysText;
+    public float keys = 0f;
     public float life = 120f;
     private Rigidbody2D rb;
     public CharacterController2D controller;
     public Animator animator;
+
+    public Door door;
 
     public Transform firePoint;
 
@@ -19,6 +24,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        CheckKeys();
+        
         horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
 
         animator.SetFloat("speed", Mathf.Abs(horizontalMove));
@@ -72,9 +79,6 @@ public class Player : MonoBehaviour
 
     public void GetDamage()
     {
-        Debug.Log("Gotcha");
-        
-
         life -= 10f;
 
         //enemieAnimator = gameObject.GetComponent<Animator>();
@@ -97,5 +101,19 @@ public class Player : MonoBehaviour
                 rb.AddForce(-rb.velocity.normalized * 600);
             }
         }  
+    }
+
+    public void OpenDoor(bool open)
+    {
+        if(open && keys >= 1)
+        {
+            door.status = true;
+            keys -= 1;
+        }
+    }
+
+    void CheckKeys()
+    {
+        keysText.text = "" + keys;
     }
 }

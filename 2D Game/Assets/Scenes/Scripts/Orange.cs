@@ -5,11 +5,6 @@ using UnityEngine;
 public class Orange : MonoBehaviour
 {
     [SerializeField] CircleCollider2D orangeCollider;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -21,9 +16,15 @@ public class Orange : MonoBehaviour
     {
       if (other.gameObject.tag == "Player")
       {
-          other.gameObject.GetComponent<Player>().life += 80;
+        if ((other.gameObject.GetComponent<Player>().life += 80f) > 100f)
+        {
+            other.gameObject.GetComponent<Player>().life = 120f;   
+        } else 
+        {
+            other.gameObject.GetComponent<Player>().life += 80f;
+        }
           
-          Destroy(gameObject);
+        Destroy(gameObject);
       }   
     }
 }
